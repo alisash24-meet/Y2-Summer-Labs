@@ -1,10 +1,15 @@
 from flask import Flask, render_template
 import random 
+import request
 
 app = Flask(__name__, template_folder = "templates",static_folder = "static")
 
-@app.route("/home")
+@app.route("/home", methods=['GET','POST'])
 def home():
+	if request.method == 'POST':
+		name = request.form['answer']
+		return redirect(url_for('fortune' ,name= name ))
+
 	return render_template("home.html")
 
 @app.route("/fortune")
