@@ -1,13 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, request
-from flask import session as login_session
 import random 
-
-
 # import requests
 
 app = Flask(__name__, template_folder = "templates",static_folder = "static")
-
-app.config['SECRET_KEY'] = "Your_secret_string"
 
 fortune_list = ["You will have IASA food", "You will have DU", "You will have CS", "You will have Entrep", "Lilach the dragon will befriend you", "You will not have hot water in the dorm", "You will eat a muffin", "You will win a smiley sticker", "You will have a voice crack", "Abdallah will be angry at you"]
 
@@ -15,11 +10,6 @@ fortune_list = ["You will have IASA food", "You will have DU", "You will have CS
 def home():
 	if request.method == 'POST':
 		answer = request.form['answer']
-		username = request.form['username']
-		login_session['username'] = username
-		login_session['answer'] = answer
-
-
 		return redirect(url_for('fortune', answer = answer))
 
 	return render_template("home.html")
