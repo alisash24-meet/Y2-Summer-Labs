@@ -29,7 +29,7 @@ def sign_up():
     return redirect(url_for('home')) 
 
 
-@app.route("/signin")
+@app.route("/signin", methods=['POST','GET'])
 def sign_in():
   if request.method == 'GET':
     return render_template('signin.html')
@@ -39,13 +39,20 @@ def sign_in():
     login_session["quotes"]=[]
     return redirect(url_for('home')) 
 
-@app.route("/signout")
-def sign_out():
-  return render_template('sign_out')
+@app.route('/signout')
+def signout():
+  login_session['user'] = None
+  auth.current_user = None
+  return redirect(url_for('sign_in'))
 
-@app.route("/home")
+@app.route("/home", methods=['POST','GET'])
 def home():
-  return render_template('home.html')
+  if request.method == 'GET':
+    return render_template('home.html')
+  else:
+    login_session["quotes"].append(request.form["quote"])
+    login_session.modified = True
+    return redirect(url_for('thanks'))
 
 @app.route("/thanks")
 def thanks():
@@ -53,7 +60,9 @@ def thanks():
 
 @app.route("/display")
 def display():
-  return render_template('display.html')
+  if request.method == 'GET':
+    return render_template('display.html',quotes=login_session["quotes"])
+
 
 if __name__ == '__main__':
   app.run(debug=True)
