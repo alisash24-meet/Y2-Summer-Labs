@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask import session as login_session
 import pyrebase
 
@@ -23,13 +23,25 @@ def sign_up():
   if request.method == 'GET':
     return render_template('signup.html')
   else:
-    login_session["email"]= request.form("email")
-    login_session["password"]= request.form("password")
+    login_session["email"] = request.form["email"]
+    login_session["password"]= request.form["password"]
+    login_session["quotes"]=[]
+    return redirect(url_for('home')) 
 
 
 @app.route("/signin")
 def sign_in():
-  return render_template('signin.html')
+  if request.method == 'GET':
+    return render_template('signin.html')
+  else:
+    login_session["email"] = request.form["email"]
+    login_session["password"]= request.form["password"]
+    login_session["quotes"]=[]
+    return redirect(url_for('home')) 
+
+@app.route("/signout")
+def sign_out():
+  return render_template('sign_out')
 
 @app.route("/home")
 def home():
