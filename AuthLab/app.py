@@ -23,10 +23,16 @@ def sign_up():
   if request.method == 'GET':
     return render_template('signup.html')
   else:
-    login_session["email"] = request.form["email"]
-    login_session["password"]= request.form["password"]
+    email = request.form["email"]
+    password= request.form["password"]
     login_session["quotes"]=[]
-    return redirect(url_for('home')) 
+    try:
+      login_session['user']= auth.create_user_with_email_and_password(email, password)
+      return redirect(url_for('home')) 
+    except:
+      print("Authentication failed :(")
+      return redirect('error')
+
 
 
 @app.route("/signin", methods=['POST','GET'])
@@ -34,10 +40,15 @@ def sign_in():
   if request.method == 'GET':
     return render_template('signin.html')
   else:
-    login_session["email"] = request.form["email"]
-    login_session["password"]= request.form["password"]
+    email = request.form["email"]
+    password= request.form["password"]
     login_session["quotes"]=[]
-    return redirect(url_for('home')) 
+    try:
+      login_session['user'] = auth.sign_in_with_email_and_password(email, password)
+      return redirect(url_for('home')) 
+    except:
+       print("This user does not exist.")
+       return redirect(url_for('error'))
 
 @app.route('/signout')
 def signout():
@@ -62,6 +73,13 @@ def thanks():
 def display():
   if request.method == 'GET':
     return render_template('display.html',quotes=login_session["quotes"])
+
+@app.route("/error")
+def error():
+  if request.method == 'GET':
+    return render_template('error.html')
+
+
 
 
 if __name__ == '__main__':
