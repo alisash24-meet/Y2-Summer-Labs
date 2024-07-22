@@ -3,7 +3,6 @@ from flask import session as login_session
 import pyrebase
 import firebase
 
-db= firebase.database()
 
 firebaseConfig = {
   "apiKey": "AIzaSyB0fzaKuEKfFlI1Ykm0o6acozFhws_VEY8",
@@ -16,6 +15,7 @@ firebaseConfig = {
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
+db= firebase.database()
 auth = firebase.auth()
 app = Flask(__name__, template_folder='Templates', static_folder='static')
 
@@ -31,13 +31,16 @@ def sign_up():
     fullname= request.form["fullname"]
     username= request.form["username"]
     user = {"fullname": fullname, "username": username,"email": email}
-    login_session["quotes"]=[]
+
+  #  login_session["quotes"]=[]
     try:
       login_session['user']= auth.create_user_with_email_and_password(email, password)
-      UID=login_session['user']['localID']
-      login_session["logged_in"]= True 
+      UID=login_session['user']['localId']
+ #     login_session["logged_in"]= True 
+      db.child("Users").child(UID).set(user)
       return redirect(url_for('home')) 
-    except:
+    except Exception as e:
+      print(e)
       print("Authentication failed :(")
       return redirect('error')
 
@@ -50,10 +53,10 @@ def sign_in():
   else:
     email = request.form["email"]
     password= request.form["password"]
-    login_session["quotes"]=[]
+  #  login_session["quotes"]=[]
     try:
       login_session['user'] = auth.sign_in_with_email_and_password(email, password)
-      login_session["logged_in"]= True 
+  #    login_session["logged_in"]= True 
       return redirect(url_for('home')) 
     except:
        print("This user does not exist.")
@@ -68,14 +71,18 @@ def signout():
 @app.route("/home", methods=['POST','GET'])
 def home():
   if request.method == 'GET':
-    if login_session["logged_in"]== True:
-      return render_template('home.html')
-    else:
-      return redirct('/')
+#    if login_session["logged_in"]== True:
+   return render_template('home.html')
+  #  else:
+   #   return redirct('/')
   else:
-    login_session["quotes"].append(request.form["quote"])
-    login_session.modified = True
-    return redirect(url_for('thanks'))
+   quotes = {
+  "text": request.form['quote'],
+  "said_by": request.form['input'],
+  "uid": login_session['user']['localId']
+  }
+  db.child("Quotes").push(quotes)
+  return redirect(url_for('thanks'))
 
 @app.route("/thanks")
 def thanks():
@@ -84,10 +91,10 @@ def thanks():
 @app.route("/display")
 def display():
   if request.method == 'GET':
-    if login_session["logged_in"]== True:
-      return render_template('display.html',quotes=login_session["quotes"])
-    else:
-      return redirct('/')
+ #   if login_session["logged_in"]== True:
+      return render_template('display.html',quotes=db.child("Quotes").get().val())
+ #   else:
+ #     return redirct('/')
 
 
 @app.route("/error")
