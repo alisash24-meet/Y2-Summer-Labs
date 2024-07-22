@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask import session as login_session
 import pyrebase
+import firebase
+
+db= firebase.database()
 
 firebaseConfig = {
   "apiKey": "AIzaSyB0fzaKuEKfFlI1Ykm0o6acozFhws_VEY8",
@@ -9,7 +12,7 @@ firebaseConfig = {
   "storageBucket": "authincation-lab.appspot.com",
   "messagingSenderId": "724672379450",
   "appId": "1:724672379450:web:f92a0d6538ccea8fe39303",
-  "databaseURL":""
+  "databaseURL":"https://authincation-lab-default-rtdb.europe-west1.firebasedatabase.app/"
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -25,9 +28,14 @@ def sign_up():
   else:
     email = request.form["email"]
     password= request.form["password"]
+    fullname= request.form["fullname"]
+    username= request.form["username"]
+    user = {"fullname": fullname, "username": username,"email": email}
     login_session["quotes"]=[]
     try:
       login_session['user']= auth.create_user_with_email_and_password(email, password)
+      UID=login_session['user']['localID']
+      login_session["logged_in"]= True 
       return redirect(url_for('home')) 
     except:
       print("Authentication failed :(")
@@ -45,6 +53,7 @@ def sign_in():
     login_session["quotes"]=[]
     try:
       login_session['user'] = auth.sign_in_with_email_and_password(email, password)
+      login_session["logged_in"]= True 
       return redirect(url_for('home')) 
     except:
        print("This user does not exist.")
@@ -59,7 +68,10 @@ def signout():
 @app.route("/home", methods=['POST','GET'])
 def home():
   if request.method == 'GET':
-    return render_template('home.html')
+    if login_session["logged_in"]== True:
+      return render_template('home.html')
+    else:
+      return redirct('/')
   else:
     login_session["quotes"].append(request.form["quote"])
     login_session.modified = True
@@ -72,7 +84,11 @@ def thanks():
 @app.route("/display")
 def display():
   if request.method == 'GET':
-    return render_template('display.html',quotes=login_session["quotes"])
+    if login_session["logged_in"]== True:
+      return render_template('display.html',quotes=login_session["quotes"])
+    else:
+      return redirct('/')
+
 
 @app.route("/error")
 def error():
@@ -84,3 +100,4 @@ def error():
 
 if __name__ == '__main__':
   app.run(debug=True)
+
