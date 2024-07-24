@@ -18,6 +18,13 @@
 		        font-size: 45px; 
 		        
 		    }
+
+		.customButton{
+			background-color: #471104;
+			font-size: 40px;
+			color: #9c6705;
+			text-shadow: #875904;
+		}
 </style>
 	<title></title>
 </head>
@@ -26,9 +33,11 @@
 <p>Here you can get either a random fact about Lana or a random Lana Del ___.</p>
 <div id="id456" style="height: 300px; display: flex; align-items: flex-end; justify-content: center;"><p><a style="margin:10 px">
 <form action="/random" method = 'POST'>
-<input name= "button" type="submit" value="Random Fact:"> {{chosen_fact2}} </input>
+<input class="customButton" name= "button" type="submit" value="Random Fact:"> {{chosen_fact2}} </input>
 <br>
-<input name= "button" type="submit" value="Lana Del"> {{chosen_lana2}}</input>
+<br>
+<input class="customButton" name= "button" type="submit" value="Lana Del"> {{chosen_lana2}}</input>
+<br>
 <br>
 <a href="/signout">Sign Out</a></form></div>
 </form>
