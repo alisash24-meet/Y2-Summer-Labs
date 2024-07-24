@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<style>
+		a { color: inherit; } 
+			body{
+				background-color: #531405;
+				font-size: 52px;
+				color:#cf8906;
+		        text-shadow: 3px 2px #ffca3b;
+		        text-align: center; 		
+			}
+		        #id456{
+		        display: block; 
+		        margin-bottom: 10px;
+		        postion:static; 
+		        text-align: center;
+		        font-size: 45px; 
+		        
+		    }
+</style>
 	<title></title>
 </head>
 <body>
 <h1>Random - Lana</h1>
-<p>Here you can get either a random fact about Lana, orrrr a random Lana Del ___.</p>
+<p>Here you can get either a random fact about Lana or a random Lana Del ___.</p>
+<div id="id456" style="height: 300px; display: flex; align-items: flex-end; justify-content: center;"><p><a style="margin:10 px">
 <form action="/random" method = 'POST'>
 <input name= "button" type="submit" value="Random Fact:"> {{chosen_fact2}} </input>
-<input name= "button" type="submit" value="Lana Del"> {{chosen_lana2}}</input></form>
+<br>
+<input name= "button" type="submit" value="Lana Del"> {{chosen_lana2}}</input>
+<br>
+<a href="/signout">Sign Out</a></form></div>
 </form>
 </body>
 </html>

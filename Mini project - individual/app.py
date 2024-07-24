@@ -39,7 +39,7 @@ def sign_in():
     password= request.form["password"]
     username= request.form["username"]
     try:
-      login_session['user'] = auth.sign_in_with_email_and_password(email, password, username)
+      login_session['user'] = auth.sign_in_with_email_and_password(email, password)
       return redirect(url_for('options')) 
     except:
        print("This user does not exist.")
