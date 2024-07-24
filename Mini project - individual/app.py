@@ -96,7 +96,10 @@ def signout():
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
-	return render_template('profile.html')
+	UID=login_session['user']['localId']
+	username = db.child("Users").child(UID).child("username").get().val()
+	input1 = db.child("Users").child(UID).child("quotes").get().val()
+	return render_template('profile.html' , username = username  , input1=input1)
 
 @app.route('/bio', methods=['POST','GET'])
 def bio():
@@ -106,9 +109,13 @@ def bio():
 		input1=[]
 		quote = request.form["quote"]
 		input1.append(quote)
-		user["quote"]=quote
-		db.child("Users").child(UID).set(user)
+		UID=login_session['user']['localId']
+		user = db.child("Users").child(UID).get().val()
 
+		user['quotes'] = quote
+		db.child("Users").child(UID).update(user)
+
+		return render_template('bio.html')
 
 @app.route('/error', methods=['POST','GET'])
 def error():
