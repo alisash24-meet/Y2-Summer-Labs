@@ -2,25 +2,32 @@
 <html>
 <head>
 <style>
+	a { color: inherit; } 
+
         body {
-            background-color: darkred; 
-            background-image: url('static/motherlana.jpg'); 
-            background-size: cover; 
-            background-position: center; 
-            color: white; 
+            background-color: #531405; 
+            background-image: url('static/motherlana.png'); 
+            background-position: top; 
+            background-size: auto 100vh;
+            background-repeat: no-repeat;
+            margin: auto;
+            color: #e3a600; 
+            text-shadow: 3px 2px #ffca3b;
             font-size: 16px; 
         }
         h1 {
-            font-size: 64px;
+            font-size: 78px;
             text-align: center; 
+            margin-top: 30px;
         }
-        a {
+
+        #id123{
             display: block; 
-            text-align: center; 
-            font-size: 40px; 
-            color: black; 
-            text-decoration: none; 
-            margin: 10px 0; 
+            margin-bottom: 10px;
+            postion:static; 
+            text-align: center;
+            font-size: 50px; 
+            
         }
 </style>
 	<title></title>
@@ -28,8 +35,6 @@
 <body>
 <h1>Lana Del Rey fan-website</h1>
 <br>
-<a href="/signin">Sign In!</a>
-<br>
-<a href="/signup">SignUp!</a>
+<div id="id123" style="height: 700px; display: flex; align-items: flex-end; justify-content: center;"><p><a style="margin:10px;" href="/signin">Sign In!</a>     <a href="/signup">SignUp!</a></p></div>
 </body>
 </html>
