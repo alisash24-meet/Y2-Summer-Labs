@@ -12,7 +12,7 @@
 			}
 		        #id456{
 		        display: block; 
-		        margin-bottom: 10px;
+		        margin-bottom: 15px;
 		        postion:static; 
 		        text-align: center;
 		        font-size: 45px; 
@@ -31,6 +31,7 @@
 <body>
 <h1>Random - Lana</h1>
 <p>Here you can get either a random fact about Lana or a random Lana Del ___.</p>
+<br>
 <div id="id456" style="height: 300px; display: flex; align-items: flex-end; justify-content: center;"><p><a style="margin:10 px">
 <form action="/random" method = 'POST'>
 <input class="customButton" name= "button" type="submit" value="Random Fact:"> {{chosen_fact2}} </input>
@@ -39,7 +40,9 @@
 <input class="customButton" name= "button" type="submit" value="Lana Del"> {{chosen_lana2}}</input>
 <br>
 <br>
-<a href="/signout">Sign Out</a></form></div>
+<a href="/signout">Sign Out</a>
+<br>
+<a href="/options">Back to options</a> </form></div>
 </form>
 </body>
 </html>

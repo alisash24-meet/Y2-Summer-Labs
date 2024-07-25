@@ -14,6 +14,14 @@
 			border: solid 3px #4D54E;
 			padding: ;
 		}
+        #idid{
+            display: block; 
+            margin-bottom: 10px;
+            postion:static; 
+            text-align: center;
+            font-size: 50px; 
+            
+        }
 
 
 
@@ -22,8 +30,14 @@
 </head>
 <body>
 <h1>Your profile - {{username}}: </h1>
-	<div class="wrapper">
-		<p> {{input1}}</p>
-	</div>
+	<div id="idid" style="height: 400px; display: flex; align-items: flex-end; justify-content: center;"><p><a style="margin-top:10px;" class="wrapper">
+		<p> {%for i in input1%}
+		{{i}}
+		<br>
+		{%endfor%}</p>	</div>
+		<a href="/signout">Sign Out</a>
+		<br>
+		<a href="/options">Back to options</a>
+
 </body>
 </html>

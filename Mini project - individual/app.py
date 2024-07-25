@@ -25,7 +25,7 @@ app.config['SECRET_KEY'] = 'super-secret-key'
 
 lana_facts=["Lana's real name is Elizabeth Woolridge Grant.","Lana studied metaphysics in college.","Lana has a tatto of the letter M in honor of her grandmother.","Lana was born on the 21st of June, 1985.","Her first stage name was May Jailer.","Lana has been nominated for 6 Grammy Awards and a Golden Globe Award.","Lana has two apartments, one in New York and the other in L.A. where she lives with her brother and sister."]
 lana_del=[" Pray"," Slay"," Tray"," Neigh"," Clay"," Lay"," Bay"]
-
+input1=[]
 @app.route("/", methods=['POST','GET'])
 def home():
    return render_template('home.html')
@@ -50,6 +50,7 @@ def sign_up():
 	if request.method == 'GET':
 		return render_template('signup.html')
 	else:
+
 	    email = request.form["email"]
 	    password= request.form["password"]
 #	    fullname= request.form["fullname"]
@@ -99,6 +100,7 @@ def profile():
 	UID=login_session['user']['localId']
 	username = db.child("Users").child(UID).child("username").get().val()
 	input1 = db.child("Users").child(UID).child("quotes").get().val()
+	print(input1)
 	return render_template('profile.html' , username = username  , input1=input1)
 
 @app.route('/bio', methods=['POST','GET'])
@@ -106,13 +108,14 @@ def bio():
 	if request.method == 'GET':
 		return render_template('bio.html')
 	else:
-		input1=[]
+		
 		quote = request.form["quote"]
 		input1.append(quote)
 		UID=login_session['user']['localId']
 		user = db.child("Users").child(UID).get().val()
 
-		user['quotes'] = quote
+		user['quotes'] = input1
+		print(user['quotes'])
 		db.child("Users").child(UID).update(user)
 
 		return render_template('bio.html')
